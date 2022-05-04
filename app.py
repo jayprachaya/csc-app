@@ -48,7 +48,7 @@ def main():
     st.session_state.patient_number = patient_number
     upload_file = st.sidebar.file_uploader('Choose CT scan File', accept_multiple_files = True)
 
-    img1 = st.slider('', min_value = 1, max_value = len(upload_file), key='112')
+
 
     place_container  = st.empty()
     result_empty = st.empty()
@@ -58,6 +58,7 @@ def main():
         st.sidebar.warning('Please Choose the CT-Scan Files')
     elif st.session_state.lesion_result is None:
         with place_container.container():
+            img1 = st.slider('', min_value = 1, max_value = len(upload_file), key='pre_sli')
             ___, img_col, ___ = st.columns([1,2,1])
             img = Image.open(upload_file[img1])
             img_col.image(img, use_column_width = 'always')
@@ -65,14 +66,19 @@ def main():
         place_container.empty()
         with place_container.container():
             col_1,col_2 = st.columns([1,1])
-            img = Image.open(upload_file[img1])
-            if st.session_state.raw_img3d.shape[0] <= 175:
+            if st.session_state.raw_img3d.shape[0] <= 128:
+                img1 = st.slider('', min_value = 1, max_value = len(upload_file), key='pro_sli')-1
+                img = Image.open(upload_file[img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d, img1)
-            elif len(upload_file)%2 == 1:
-                img1 = int(img1/2)-1
-                overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
-            elif len(upload_file)%2 == 0:
-                img1 = int(img1/2)
+            elif ((st.session_state.raw_img3d.shape[0] > 128) and (st.session_state.raw_img3d.shape[0] <= 175)):
+                start_lung = int((len(upload_file)/2)-64)
+                end_lung = int((len(upload_file)/2)+64)
+                img1 = st.slider('', min_value = 1, max_value = end_lung, key='pro_sli')-1
+                img = Image.open(upload_file[start_lung:end_lung:][img1])
+                overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[start_lung:end_lung:,:,:], img1)
+            elif st.session_state.raw_img3d.shape[0] <= 256:
+                img1 = st.slider('', min_value = 1, max_value = int(len(upload_file)/2), key='pro_sli')-1
+                img = Image.open(upload_file[::2][img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
             col_2.pyplot(overay_re)
             col_1.image(img, use_column_width = 'always')
@@ -82,8 +88,8 @@ def main():
         with result_empty.container():
             st.subheader('Results')
             col1, col2 = st.columns(2)
-            col1.metric(label = 'Total Severity Score:  ', value = st.session_state.TSS )
-            col1.metric(label = 'Severity Type:  ', value = st.session_state.Type_)
+            col1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
+            col1.metric(label = 'Severity Type', value = st.session_state.Type_)
             col2.dataframe(st.session_state.df)
             pdf = FPDF()
             pdf = FPDF(orientation = 'P', unit = 'mm', format = 'A4')
@@ -173,16 +179,22 @@ def main():
         #TSS, Type_, df  = TSS_score_version3(lung_result, lesion_result)
         place_container.empty()
         with place_container.container():
-            col_1, col_2 = st.columns([1,1])
-            img = Image.open(upload_file[img1])
-            if raw_img3d.shape[0] <= 175:
+            col_1,col_2 = st.columns([1,1])
+            if raw_img3d.shape[0] <= 128:
+                img1 = st.slider('', min_value = 1, max_value = len(upload_file), key='pro_sli')-1
+                img = Image.open(upload_file[img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d, img1)
-            elif len(upload_file)%2 == 1:
-                img1 = int(img1/2)-1
+            elif ((raw_img3d.shape[0] > 128) and (raw_img3d.shape[0] <= 175)):
+                start_lung = int((len(upload_file)/2)-64)
+                end_lung = int((len(upload_file)/2)+64)
+                img1 = st.slider('', min_value = 1, max_value = end_lung, key='pro_sli')-1
+                img = Image.open(upload_file[start_lung:end_lung:][img1])
+                overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[start_lung:end_lung:,:,:], img1)
+            elif raw_img3d.shape[0] <= 256:
+                img1 = st.slider('', min_value = 1, max_value = int(len(upload_file)/2), key='pro_sli')-1
+                img = Image.open(upload_file[::2][img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
-            elif len(upload_file)%2 == 0:
-                img1 = int(img1/2)
-                overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
+            col_1,col_2 = st.columns([1,1])
             col_2.pyplot(overay_re)
             col_1.image(img, use_column_width = 'always')
 
@@ -191,8 +203,8 @@ def main():
         with result_empty.container():
             st.subheader('Results')
             col1, col2 = st.columns(2)
-            col1.metric(label = 'Total Severity Score:  ', value = st.session_state.TSS )
-            col1.metric(label = 'Severity Type:  ', value = st.session_state.Type_ )
+            col1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
+            col1.metric(label = 'Severity Type', value = st.session_state.Type_ )
             col2.dataframe(st.session_state.df)
             pdf = FPDF()
             pdf = FPDF(orientation = 'P', unit = 'mm', format = 'A4')
