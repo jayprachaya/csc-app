@@ -65,12 +65,15 @@ def main():
         place_container.empty()
         with place_container.container():
             col_1,col_2 = st.columns([1,1])
+            img = Image.open(upload_file[img1])
             if st.session_state.raw_img3d.shape[0] <= 175:
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d, img1)
-            else:
-                img1 = int(img1/2-1)
+            elif len(upload_file)%2 == 1:
+                img1 = int(img1/2)-1
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
-            img = Image.open(upload_file[img1]) 
+            elif len(upload_file)%2 == 0:
+                img1 = int(img1/2)
+                overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
             col_2.pyplot(overay_re)
             col_1.image(img, use_column_width = 'always')
 
@@ -171,12 +174,15 @@ def main():
         place_container.empty()
         with place_container.container():
             col_1, col_2 = st.columns([1,1])
+            img = Image.open(upload_file[img1])
             if raw_img3d.shape[0] <= 175:
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d, img1)
-            else:
-                img1 = int(img1/2-1)
+            elif len(upload_file)%2 == 1:
+                img1 = int(img1/2)-1
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
-            img = Image.open(upload_file[img1])
+            elif len(upload_file)%2 == 0:
+                img1 = int(img1/2)
+                overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
             col_2.pyplot(overay_re)
             col_1.image(img, use_column_width = 'always')
 
