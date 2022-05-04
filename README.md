@@ -1,5 +1,5 @@
 # Segmentation of Lung Lobes and Lesions for Severity Classification of COVID-19 CT Scans.
-App Demo: https://share.streamlit.io/hds-no-69/covid-19_severity_calculator/main/app.py
+App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py
 <img src="https://github.com/hds-no-69/COVID-19_Severity_Calculator/blob/aa4af859751397c6d4553c718eef34c08a446835/Project%20info/workflow.png" style="max-width: 60%;" align="center" />
 
 ## About
