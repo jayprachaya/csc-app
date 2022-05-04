@@ -83,7 +83,8 @@ def pad_patchify(padded,x,y,z):
 
 #-------------------------- prediction --------------------------
 
-@st.cache # cache the function so predictions aren't always redone (Streamlit refreshes every click)
+#@st.cache # cache the function so predictions aren't always redone (Streamlit refreshes every click)
+@jit
 def predict_function(my_model, backbone, large_image, padding_size):
   padded = padding(large_image, padding_size) # padding
   input_img = pad_patchify(padded,128,256,256) # patchify
@@ -99,7 +100,8 @@ def predict_function(my_model, backbone, large_image, padding_size):
   prediction_result = prediction_reshape[:large_image.shape[0],:,:].astype(np.uint8)
   return prediction_result
 
-@st.cache # cache the function so predictions aren't always redone (Streamlit refreshes every click)
+#@st.cache # cache the function so predictions aren't always redone (Streamlit refreshes every click)
+@jit
 def predict(my_model, backbone, large_image, padding_size):
   if large_image.shape[0] <= 128:
     prediction_result = predict_function(my_model, backbone, large_image, padding_size)
