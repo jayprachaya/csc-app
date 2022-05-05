@@ -56,6 +56,8 @@ def main():
 
     if len(upload_file) == 0 :
         st.sidebar.warning('Please Choose the CT-Scan Files')
+    elif len(upload_file) > 256 :
+        st.warning('Please upload the CT-Scan Files less than 257 images')
     elif st.session_state.lesion_result is None:
         with place_container.container():
             img1 = st.slider('', min_value = 1, max_value = len(upload_file), key='pre_sli')
@@ -73,7 +75,7 @@ def main():
             elif ((st.session_state.raw_img3d.shape[0] > 128) and (st.session_state.raw_img3d.shape[0] <= 175)):
                 start_lung = int((len(upload_file)/2)-64)
                 end_lung = int((len(upload_file)/2)+64)
-                img1 = st.slider('', min_value = 1, max_value = end_lung, key='pro_sli')-1
+                img1 = st.slider('', min_value = 1, max_value = end_lung-start_lung, key='pro_sli')-1
                 img = Image.open(upload_file[start_lung:end_lung:][img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[start_lung:end_lung:,:,:], img1)
             elif st.session_state.raw_img3d.shape[0] <= 256:
@@ -187,7 +189,7 @@ def main():
             elif ((raw_img3d.shape[0] > 128) and (raw_img3d.shape[0] <= 175)):
                 start_lung = int((len(upload_file)/2)-64)
                 end_lung = int((len(upload_file)/2)+64)
-                img1 = st.slider('', min_value = 1, max_value = end_lung, key='pro_sli')-1
+                img1 = st.slider('', min_value = 1, max_value = end_lung-start_lung, key='pro_sli')-1
                 img = Image.open(upload_file[start_lung:end_lung:][img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[start_lung:end_lung:,:,:], img1)
             elif raw_img3d.shape[0] <= 256:
