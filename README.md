@@ -11,4 +11,5 @@ COVID-19 pandemic has spread all over the world, including Thailand. The disease
 
 ## Development process
 <img src="https://github.com/hds-no-69/COVID-19_Severity_Calculator/blob/aa4af859751397c6d4553c718eef34c08a446835/Project%20info/workflow.png" style="max-width: 60%;" align="center" />
+
 ## Reference
