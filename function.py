@@ -8,6 +8,7 @@ from PIL import Image
 from skimage import color
 from matplotlib import pyplot as plt
 from matplotlib import image as mpimg
+import base64
 from numba import jit
 
 from patchify import patchify, unpatchify
@@ -31,36 +32,35 @@ def load_imgdata(image_list, img_size):
   # print(array_3d_img.shape)
   return array_3d_img
 
-@jit
-def load_img1_case(img_path, img_size):
-  dirFiles = []
-  img_3d = []
+# def load_img1_case(img_path, img_size):
+#   dirFiles = []
+#   img_3d = []
 
-  for i in os.listdir(img_path):
-    dirFiles.append(i)
-    dirFiles.sort(key=lambda f: int(re.sub('\D', '', f)))
+#   for i in os.listdir(img_path):
+#     dirFiles.append(i)
+#     dirFiles.sort(key=lambda f: int(re.sub('\D', '', f)))
 
-  for file in dirFiles:
-    if file[11:] == 'jpg':
-      file_name  = file[:10]+'.jpg'
-      file_path = os.path.join(img_path, file_name)
+#   for file in dirFiles:
+#     if file[11:] == 'jpg':
+#       file_name  = file[:10]+'.jpg'
+#       file_path = os.path.join(img_path, file_name)
       
-      if os.path.exists(file_path): #have file return => True, no file return => False
-        image = np.array(Image.open(file_path).convert('L'))
+#       if os.path.exists(file_path): #have file return => True, no file return => False
+#         image = np.array(Image.open(file_path).convert('L'))
 
-        # resize to img_size
-        image = cv2.resize(image, (img_size, img_size), interpolation = cv2.INTER_AREA)
+#         # resize to img_size
+#         image = cv2.resize(image, (img_size, img_size), interpolation = cv2.INTER_AREA)
 
-      else:
-        print('no image file:',file_name)
+#       else:
+#         print('no image file:',file_name)
         
-      img_3d.append(image)
-    else: continue
+#       img_3d.append(image)
+#     else: continue
 
-  # convert to array
-  array_3d_img = np.array(img_3d)
-  print(array_3d_img.shape)
-  return array_3d_img
+#   # convert to array
+#   array_3d_img = np.array(img_3d)
+#   print(array_3d_img.shape)
+#   return array_3d_img
 
 #-------------------------- padding and patchify function --------------------------
 @jit
@@ -130,8 +130,7 @@ def predict(my_model, backbone, large_image, padding_size):
       prediction_result = predict_function(my_model, backbone, large_image[::2,:,:], padding_size) # predict skipping slice
     else:
       print('CT slice volume is to large')
-
-#   print(prediction_result.shape)
+      
   return prediction_result
 
 # ---------------------------------- lesion predict --------------------------------
@@ -235,9 +234,15 @@ def TSS_score(score_lobe_, score_lesion_lobe_):
 
   # make dataframe
   CT_score_df = {'Lobe':['Right Upper Lobe (RUL)','Right Lower Lobe (RLL)','Right Middle Lobe (RML)',
-                         'Left Upper Lobe (LUL)','Left Lower Lobe (LLL)'],
-                'Percent Infection (PI%)':[PI_RUL, PI_RLL, PI_RML, PI_LUL, PI_LLL],
+                          'Left Upper Lobe (LUL)','Left Lower Lobe (LLL)'],
+                'Percentage of Infection':[PI_RUL, PI_RLL,PI_RML,PI_LUL,PI_LLL],
                 'Score':[CT_RUL, CT_RLL, CT_RML, CT_LUL, CT_LLL]}
+
+  CT_score_df2 = {"RUL":[PI_RUL, CT_RUL],
+                 "RLL": [PI_RLL, CT_RLL],
+                 "RML": [PI_RML, CT_RML],
+                 "LUL": [PI_LUL, CT_LUL],
+                 "LLL": [PI_LLL, CT_LLL]}
 
   # CT_each_PI = {'RUL':PI_RUL, 'RLL':PI_RLL, 'RML':PI_RML, 'LUL':PI_LUL, 'LLL':PI_LLL}
   # CT_each_Score = {'RUL':CT_RUL, 'RLL':CT_RLL, 'RML':CT_RML, 'LUL':CT_LUL, 'LLL':CT_LLL}
@@ -247,205 +252,9 @@ def TSS_score(score_lobe_, score_lesion_lobe_):
   elif TSS <= 17: Type ="Moderate"
   else: Type ="Severe"
 
-  return TSS, Type, pd.DataFrame.from_dict(CT_score_df)
+  return TSS, Type, pd.DataFrame.from_dict(CT_score_df), pd.DataFrame.from_dict(CT_score_df2,orient='index', columns=['Infection (%)', 'Score'])
 
-
-# ---------------------------------- TSS version 2------------------------------------------
-@jit
-def PI_version2(Lesion_area, Lobe_area):
-  if Lesion_area == 0 or Lobe_area == 0:
-    PI = 0 
-  else: 
-    quotient = Lesion_area / Lobe_area
-    PI = quotient * 100
-  return PI
-
-@jit
-def sum_pixel_version2(lung_result_, lesion_result_):
-  '''
-  Label class
-  RUL :right upper lobe:  1
-  RLL :right lower lobe:  2
-  RML :right middle lobe: 3
-  LUL :left upper lobe:   4
-  LLL :left lower lobe:   5
-  '''
-  score_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0,'ERROR':0}
-  score_lesion_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0}
-  for i in range(lung_result_.shape[0]):
-    for j in range(lung_result_.shape[1]):
-      if lung_result_[i,j] == 0: 
-        score_lobe["BG"] += 1 
-        if lesion_result_[i,j] == 1 : score_lesion_lobe['BG']+=1
-        else: continue
-      elif lung_result_[i,j] == 1: 
-        score_lobe["RUL"] += 1
-        if lesion_result_[i,j] == 1 : score_lesion_lobe['RUL']+=1
-        else: continue
-      elif lung_result_[i,j] == 2: 
-        score_lobe["RLL"] += 1
-        if lesion_result_[i,j] == 1 : score_lesion_lobe['RLL']+=1
-        else: continue
-      elif lung_result_[i,j] == 3: 
-        score_lobe["RML"] += 1
-        if lesion_result_[i,j] == 1 : score_lesion_lobe['RML']+=1
-        else: continue
-      elif lung_result_[i,j] == 4: 
-        score_lobe["LUL"] += 1
-        if lesion_result_[i,j] == 1 : score_lesion_lobe['LUL']+=1
-        else: continue
-      elif lung_result_[i,j] == 5: 
-        score_lobe["LLL"] += 1 
-        if lesion_result_[i,j] == 1 : score_lesion_lobe['LLL']+=1
-        else: continue
-      else: score_lobe["ERROR"] += 1
-
-  return score_lobe, score_lesion_lobe
-
-@jit
-def CT_score(PI_):
-  if PI_ == 0: CT_score = 0
-  elif PI_ <= 5: CT_score = 1
-  elif PI_ <= 25: CT_score = 2
-  elif PI_ <= 50: CT_score = 3
-  elif PI_ <= 75: CT_score = 4
-  else: CT_score = 5
-  return CT_score
-
-# TSS ver2
-'''
-Percentage of each CT slice for all lung lobe
-'''
-@jit
-def TSS_score_version2(lung_result, lesion_result):
-  score_total_PI = {'RUL':[], 'RLL':[], 'RML':[], 'LUL':[], 'LLL':[]}
-  count_lobe_appear = {'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0}
-  for i in range(lung_result.shape[0]):
-    score_lobe_, score_lesion_lobe_ = sum_pixel_version2(lung_result[i,:,:], lesion_result[i,:,:])
-    PI_RUL = PI_version2(score_lesion_lobe_['RUL'], score_lobe_['RUL'])
-    PI_RLL = PI_version2(score_lesion_lobe_['RLL'], score_lobe_['RLL'])
-    PI_RML = PI_version2(score_lesion_lobe_['RML'], score_lobe_['RML'])
-    PI_LUL = PI_version2(score_lesion_lobe_['LUL'], score_lobe_['LUL'])
-    PI_LLL = PI_version2(score_lesion_lobe_['LLL'], score_lobe_['LLL'])
-
-    score_total_PI['RUL'].append(PI_RUL)
-    score_total_PI['RLL'].append(PI_RLL)
-    score_total_PI['RML'].append(PI_RML)
-    score_total_PI['LUL'].append(PI_LUL)
-    score_total_PI['LLL'].append(PI_LLL)
-
-    if  score_lobe_['RUL'] != 0 :count_lobe_appear['RUL'] += 1
-    if  score_lobe_['RLL'] != 0 :count_lobe_appear['RLL'] += 1
-    if  score_lobe_['RML'] != 0 :count_lobe_appear['RML'] += 1
-    if  score_lobe_['LUL'] != 0 :count_lobe_appear['LUL'] += 1
-    if  score_lobe_['LLL'] != 0 :count_lobe_appear['LLL'] += 1
-  
-  PI_RUL = sum(score_total_PI['RUL'])/count_lobe_appear['RUL']
-  PI_RLL = sum(score_total_PI['RLL'])/count_lobe_appear['RLL']
-  PI_RML = sum(score_total_PI['RML'])/count_lobe_appear['RML']
-  PI_LUL = sum(score_total_PI['LUL'])/count_lobe_appear['LUL']
-  PI_LLL = sum(score_total_PI['LLL'])/count_lobe_appear['LLL']
-
-  CT_RUL = CT_score(round(PI_RUL))
-  CT_RLL = CT_score(round(PI_RLL))
-  CT_RML = CT_score(round(PI_RML))
-  CT_LUL = CT_score(round(PI_LUL))
-  CT_LLL = CT_score(round(PI_LLL))
-
-  CT_score_df = {'Lobe':['Right Upper Lobe (RUL)','Right Lower Lobe (RLL)','Right Middle Lobe (RML)',
-                          'Left Upper Lobe (LUL)','Left Lower Lobe (LLL)'],
-                'Percent Infection (PI%)':[round(PI_RUL), round(PI_RLL), round(PI_RML), round(PI_LUL), round(PI_LLL)],
-                'Score':[CT_RUL, CT_RLL, CT_RML, CT_LUL, CT_LLL]}
-
-  # TSS
-  TSS = CT_RUL+ CT_RLL+ CT_RML+ CT_LUL+ CT_LLL
-  if TSS == 0: Type ="Normal"
-  elif TSS <= 7: Type ="Mild"
-  elif TSS <= 17: Type ="Moderate"
-  else: Type ="Severe"
-
-  return TSS, Type, pd.DataFrame.from_dict(CT_score_df)
-
-# TSS ver3
-'''
-Percentage of each CT slice for all lesion (not all lung lobe)
-'''
-@jit
-def TSS_score_version3(lung_result, lesion_result):
-  score_total_PI = {'RUL':[], 'RLL':[], 'RML':[], 'LUL':[], 'LLL':[]}
-  count_lobe_appear = {'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0}
-  for i in range(lung_result.shape[0]):
-    score_lobe_, score_lesion_lobe_ = sum_pixel_version2(lung_result[i,:,:], lesion_result[i,:,:])
-    PI_RUL = PI_version2(score_lesion_lobe_['RUL'], score_lobe_['RUL'])
-    PI_RLL = PI_version2(score_lesion_lobe_['RLL'], score_lobe_['RLL'])
-    PI_RML = PI_version2(score_lesion_lobe_['RML'], score_lobe_['RML'])
-    PI_LUL = PI_version2(score_lesion_lobe_['LUL'], score_lobe_['LUL'])
-    PI_LLL = PI_version2(score_lesion_lobe_['LLL'], score_lobe_['LLL'])
-
-    score_total_PI['RUL'].append(PI_RUL)
-    score_total_PI['RLL'].append(PI_RLL)
-    score_total_PI['RML'].append(PI_RML)
-    score_total_PI['LUL'].append(PI_LUL)
-    score_total_PI['LLL'].append(PI_LLL)
-
-    if  score_lesion_lobe_['RUL'] != 0 :count_lobe_appear['RUL'] += 1
-    if  score_lesion_lobe_['RLL'] != 0 :count_lobe_appear['RLL'] += 1
-    if  score_lesion_lobe_['RML'] != 0 :count_lobe_appear['RML'] += 1
-    if  score_lesion_lobe_['LUL'] != 0 :count_lobe_appear['LUL'] += 1
-    if  score_lesion_lobe_['LLL'] != 0 :count_lobe_appear['LLL'] += 1
-  
-  # Average PI% -----------------
-  # RUL
-  if count_lobe_appear['RUL'] != 0:
-    PI_RUL = sum(score_total_PI['RUL'])/count_lobe_appear['RUL']
-  else:
-    PI_RUL = 0
-    
-  # RLL
-  if count_lobe_appear['RLL'] != 0:
-    PI_RLL = sum(score_total_PI['RLL'])/count_lobe_appear['RLL']
-  else:
-    PI_RLL = 0
-
-  # RML
-  if count_lobe_appear['RML'] != 0:
-    PI_RML = sum(score_total_PI['RML'])/count_lobe_appear['RML']
-  else:
-    PI_RML= 0
-
-  # LUL
-  if count_lobe_appear['LUL'] != 0:
-    PI_LUL = sum(score_total_PI['LUL'])/count_lobe_appear['LUL']
-  else:
-    PI_LUL = 0
-
-  # RLL
-  if count_lobe_appear['LLL'] != 0:
-    PI_LLL = sum(score_total_PI['LLL'])/count_lobe_appear['LLL']
-  else:
-    PI_LLL = 0
-
-  CT_RUL = CT_score(round(PI_RUL))
-  CT_RLL = CT_score(round(PI_RLL))
-  CT_RML = CT_score(round(PI_RML))
-  CT_LUL = CT_score(round(PI_LUL))
-  CT_LLL = CT_score(round(PI_LLL))
-
-  CT_score_df = {'Lobe':['Right Upper Lobe (RUL)','Right Lower Lobe (RLL)','Right Middle Lobe (RML)',
-                          'Left Upper Lobe (LUL)','Left Lower Lobe (LLL)'],
-                'Percent Infection (PI%)':[round(PI_RUL), round(PI_RLL), round(PI_RML), round(PI_LUL), round(PI_LLL)],
-                'Score':[CT_RUL, CT_RLL, CT_RML, CT_LUL, CT_LLL]}
-
-  # TSS
-  TSS = CT_RUL+ CT_RLL+ CT_RML+ CT_LUL+ CT_LLL
-  if TSS == 0: Type ="Normal"
-  elif TSS <= 7: Type ="Mild"
-  elif TSS <= 17: Type ="Moderate"
-  else: Type ="Severe"
-
-  return TSS, Type, pd.DataFrame.from_dict(CT_score_df)
-
-#-----------------------------------Overy---------------------------------------#
+#-----------------------------------Overy---------------------------------------
 @jit
 def overay(result_oredict, image, slice__):
   colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1)]
@@ -464,3 +273,8 @@ def overay(result_oredict, image, slice__):
   show_pyplot = plt.show()
 
   return show_pyplot
+
+#-----------------------------------Save---------------------------------------
+def create_download_link(val, filename, type_file):
+  b64 = base64.b64encode(val)  # val looks like b'...'
+  return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}">Download {type_file}</a>'
