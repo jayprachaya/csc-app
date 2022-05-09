@@ -7,15 +7,14 @@ COVID-19 pandemic has spread all over the world, including Thailand. The disease
 
 ## Step for work
 1. Input Lung CT-scan image `.jpg` (Max 256 images per patient)
-<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/upload.gif" style="max-width: 40%;" align="center" />
+<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/upload.gif" style="max-width: 20%;" align="center" />
 
 2. Click `Predict` button.
-<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/predict.gif" style="max-width: 40%;" align="center" />
+<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/predict.gif" style="max-width: 20%;" align="center" />
 
 3. Click `Save` button.
-<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/save.gif" style="max-width: 40%;" align="center" />
+<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/save.gif" style="max-width: 20%;" align="center" />
 
 ## Development process
-<img src="https://github.com/hds-no-69/COVID-19_Severity_Calculator/blob/aa4af859751397c6d4553c718eef34c08a446835/Project%20info/workflow.png" style="max-width: 40%;" align="center" />
 
 ## Reference
