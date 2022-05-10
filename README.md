@@ -10,10 +10,10 @@ COVID-19 pandemic has spread all over the world, including Thailand. The disease
 <img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/upload.gif" style="max-width: 20%;" align="center" />
 
 2. Click `Predict` button.
-<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/predict.gif" style="max-width: 20%;" align="center" />
+<img src="https://github.com/hds-69/csc-app/blob/57db1150b52154eb33c64af3959c8c43b697c35b/Project%20info/predict.gif" style="max-width: 20%;" align="center" />
 
 3. Click `Save` button.
-<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/save.gif" style="max-width: 20%;" align="center" />
+<img src="https://github.com/hds-69/csc-app/blob/57db1150b52154eb33c64af3959c8c43b697c35b/Project%20info/save.gif" style="max-width: 20%;" align="center" />
 
 ## Development process
 
