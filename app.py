@@ -60,7 +60,6 @@ def main():
     upload_file = st.sidebar.file_uploader('Choose CT scan File', type=['jpg'],accept_multiple_files = True)
 
     place_container  = st.empty()
-    result_empty = st.empty()
     predic, __ ,save_pdf = st.sidebar.columns([1,2,1])
     ___, link_html = st.sidebar.columns([2,2])
 
@@ -77,32 +76,32 @@ def main():
     else:
         place_container.empty()
         with place_container.container():
-            col1,col2= st.columns([6,2])
+            col2,col1= st.columns([2,6])
             if st.session_state.raw_img3d.shape[0] <= 175:
                 img1 = col1.slider('', min_value = 1, max_value = len(upload_file), key='pro_sli')-1
                 img = Image.open(upload_file[img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d, img1)
-                col_1,col_2,col_3 = st.columns([3,3,2])
-                col_2.pyplot(overay_re)
-                col_1.image(img, use_column_width = 'always')
+                col_1,col_2,col_3 = st.columns([2,3,3])
+                col_3.pyplot(overay_re)
+                col_2.image(img, use_column_width = 'always')
 
                 # result
-                col_3.metric(label = 'Total Severity Score', value = st.session_state.TSS )
-                col_3.metric(label = 'Severity Type', value = st.session_state.Type_)
-                col_3.dataframe(st.session_state.df2)
+                col_1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
+                col_1.metric(label = 'Severity Type', value = st.session_state.Type_ )
+                col_1.dataframe(st.session_state.df2)
 
             elif st.session_state.raw_img3d.shape[0] <= 256:
                 img1 = col1.slider('', min_value = 1, max_value = int(len(upload_file)/2), key='pro_sli')-1
                 img = Image.open(upload_file[::2][img1])
                 overay_re = overay(st.session_state.lesion_result, st.session_state.raw_img3d[::2,:,:], img1)
-                col_1,col_2,col_3 = st.columns([3,3,2])
-                col_2.pyplot(overay_re)
-                col_1.image(img, use_column_width = 'always')
+                col_1,col_2,col_3 = st.columns([2,3,3])
+                col_3.pyplot(overay_re)
+                col_2.image(img, use_column_width = 'always')
 
                 # result
-                col_3.metric(label = 'Total Severity Score', value = st.session_state.TSS )
-                col_3.metric(label = 'Severity Type', value = st.session_state.Type_)
-                col_3.dataframe(st.session_state.df2)
+                col_1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
+                col_1.metric(label = 'Severity Type', value = st.session_state.Type_ )
+                col_1.dataframe(st.session_state.df2)
             else:
                 img1 = col1.slider('', min_value = 1, max_value = len(upload_file), key='pro_sli')-1
                 img = Image.open(upload_file[img1])
@@ -155,7 +154,7 @@ def main():
 
         place_container.empty()
         with place_container.container():
-            col1,col2= st.columns([6,2])
+            col2,col1= st.columns([2,6])
             if raw_img3d.shape[0] <= 175:
                 img1 = col1.slider('', min_value = 1, max_value = len(upload_file), key='pro_sli')-1
                 img = Image.open(upload_file[img1])
@@ -171,14 +170,14 @@ def main():
                 
             # col2.subheader('Results')
 
-            col_1,col_2,col_3 = st.columns([3,3,2])
-            col_2.pyplot(overay_re)
-            col_1.image(img, use_column_width = 'always')
+            col_1,col_2,col_3 = st.columns([2,3,3])
+            col_3.pyplot(overay_re)
+            col_2.image(img, use_column_width = 'always')
 
             # result
-            col_3.metric(label = 'Total Severity Score', value = st.session_state.TSS )
-            col_3.metric(label = 'Severity Type', value = st.session_state.Type_ )
-            col_3.dataframe(st.session_state.df2)
+            col_1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
+            col_1.metric(label = 'Severity Type', value = st.session_state.Type_ )
+            col_1.dataframe(st.session_state.df2)
             
     if save_pdf.button('Save'):
         pdf = FPDF()
