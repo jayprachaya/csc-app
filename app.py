@@ -31,6 +31,10 @@ def main():
         st.session_state.TSS = None
     if 'Type_' not in st.session_state:
         st.session_state.Type_ = None
+
+    if 'involve' not in st.session_state:
+        st.session_state.involve = None
+
     if 'df' not in st.session_state:
         st.session_state.df = None
     if 'df2' not in st.session_state:
@@ -88,6 +92,7 @@ def main():
                 # result
                 col_1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
                 col_1.metric(label = 'Severity Type', value = st.session_state.Type_ )
+                col_1.metric(label = 'Lung Involvement', value = st.session_state.involve )
                 col_1.dataframe(st.session_state.df2)
 
             elif st.session_state.raw_img3d.shape[0] <= 256:
@@ -101,6 +106,7 @@ def main():
                 # result
                 col_1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
                 col_1.metric(label = 'Severity Type', value = st.session_state.Type_ )
+                col_1.metric(label = 'Lung Involvement', value = st.session_state.involve )
                 col_1.dataframe(st.session_state.df2)
             else:
                 img1 = col1.slider('', min_value = 1, max_value = len(upload_file), key='pro_sli')-1
@@ -146,9 +152,10 @@ def main():
         # TSS version 1
         score_lobe, score_lesion_lobe = sum_pixel(lung_result, lesion_result)
 
-        TSS, Type_, df, df2  = TSS_score(score_lobe, score_lesion_lobe)
+        TSS, Type_, involve, df, df2  = TSS_score(score_lobe, score_lesion_lobe)
         st.session_state.TSS = TSS
         st.session_state.Type_ = Type_
+        st.session_state.involve = involve
         st.session_state.df = df
         st.session_state.df2 = df2
 
@@ -177,6 +184,7 @@ def main():
             # result
             col_1.metric(label = 'Total Severity Score', value = st.session_state.TSS )
             col_1.metric(label = 'Severity Type', value = st.session_state.Type_ )
+            col_1.metric(label = 'Lung Involvement', value = st.session_state.involve )
             col_1.dataframe(st.session_state.df2)
             
     if save_pdf.button('Save'):

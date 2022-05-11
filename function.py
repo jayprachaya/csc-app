@@ -63,7 +63,7 @@ def load_imgdata(image_list, img_size):
 #   return array_3d_img
 
 #-------------------------- padding and patchify function --------------------------
-@jit
+
 def padding(image, slice_vol):
   slice_, row, col= image.shape #(119,256,256)
   #เพิ่ม slice เข้าไป
@@ -75,7 +75,7 @@ def padding(image, slice_vol):
   else: 
     image_paded = image[:slice_vol,:,:]
   return np.asarray(np.array(image_paded), dtype="uint8" )
-@jit
+
 def pad_patchify(padded,x,y,z):
   patches = patchify(padded, (x, y, z), step=x)
   input_img = np.reshape(patches, (-1, patches.shape[3], patches.shape[4], patches.shape[5]))
@@ -134,7 +134,7 @@ def predict(my_model, backbone, large_image, padding_size):
   return prediction_result
 
 # ---------------------------------- lesion predict --------------------------------
-@jit
+
 def crop_img(large_image, lung_result):
   if large_image.shape[0]<=175:
     img_crop = large_image.copy()
@@ -155,7 +155,7 @@ def crop_img(large_image, lung_result):
                 else: #ข้างนอก
                     img_crop[i,j,k] = 0
   return img_crop
-@jit
+
 def contrast_CLAHE(image, ts):
     clahe = cv2.createCLAHE(clipLimit=ts, tileGridSize=(8,8))
     img_list = []
@@ -176,41 +176,41 @@ def sum_pixel(lung_result, lesion_result):
   LUL :left upper lobe:   4
   LLL :left lower lobe:   5
   '''
-  score_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0,'ERROR':0}
-  score_lesion_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0}
+  area_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0,'ERROR':0}
+  area_lesion_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0}
   for i in range(lung_result.shape[0]):
     for j in range(lung_result.shape[1]):
       for k in range(lung_result.shape[2]):
         if lung_result[i,j,k] == 0: 
-          score_lobe["BG"] += 1 
-          if lesion_result[i,j,k] == 1 : score_lesion_lobe['BG']+=1
+          area_lobe["BG"] += 1 
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['BG']+=1
           else: continue
         elif lung_result[i,j,k] == 1: 
-          score_lobe["RUL"] += 1
-          if lesion_result[i,j,k] == 1 : score_lesion_lobe['RUL']+=1
+          area_lobe["RUL"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['RUL']+=1
           else: continue
         elif lung_result[i,j,k] == 2: 
-          score_lobe["RLL"] += 1
-          if lesion_result[i,j,k] == 1 : score_lesion_lobe['RLL']+=1
+          area_lobe["RLL"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['RLL']+=1
           else: continue
         elif lung_result[i,j,k] == 3: 
-          score_lobe["RML"] += 1
-          if lesion_result[i,j,k] == 1 : score_lesion_lobe['RML']+=1
+          area_lobe["RML"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['RML']+=1
           else: continue
         elif lung_result[i,j,k] == 4: 
-          score_lobe["LUL"] += 1
-          if lesion_result[i,j,k] == 1 : score_lesion_lobe['LUL']+=1
+          area_lobe["LUL"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['LUL']+=1
           else: continue
         elif lung_result[i,j,k] == 5: 
-          score_lobe["LLL"] += 1 
-          if lesion_result[i,j,k] == 1 : score_lesion_lobe['LLL']+=1
+          area_lobe["LLL"] += 1 
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['LLL']+=1
           else: continue
-        else: score_lobe["ERROR"] += 1
+        else: area_lobe["ERROR"] += 1
   # print('***** DONE *****')
   # print(score_lobe)
   # print(score_lesion_lobe)
-  return score_lobe, score_lesion_lobe
-@jit
+  return area_lobe, area_lesion_lobe
+
 def PI_CTscore(Lesion_area, Lobe_area):
   quotient = Lesion_area / Lobe_area
   # PI = round(quotient * 100,2) 
@@ -223,14 +223,15 @@ def PI_CTscore(Lesion_area, Lobe_area):
   elif PI <= 75: CT_score = 4
   else: CT_score = 5
   return(PI, CT_score) 
-@jit
-def TSS_score(score_lobe_, score_lesion_lobe_):
-  PI_BG, CT_BG = PI_CTscore(score_lesion_lobe_['BG'], score_lobe_['BG'])
-  PI_RUL, CT_RUL = PI_CTscore(score_lesion_lobe_['RUL'], score_lobe_['RUL'])
-  PI_RLL, CT_RLL = PI_CTscore(score_lesion_lobe_['RLL'], score_lobe_['RLL'])
-  PI_RML, CT_RML = PI_CTscore(score_lesion_lobe_['RML'], score_lobe_['RML'])
-  PI_LUL, CT_LUL = PI_CTscore(score_lesion_lobe_['LUL'], score_lobe_['LUL'])
-  PI_LLL, CT_LLL = PI_CTscore(score_lesion_lobe_['LLL'], score_lobe_['LLL'])
+
+
+def TSS_score(area_lobe, area_lesion_lobe):
+  # PI_BG, CT_BG = PI_CTscore(area_lesion_lobe['BG'], area_lobe['BG'])
+  PI_RUL, CT_RUL = PI_CTscore(area_lesion_lobe['RUL'], area_lobe['RUL'])
+  PI_RLL, CT_RLL = PI_CTscore(area_lesion_lobe['RLL'], area_lobe['RLL'])
+  PI_RML, CT_RML = PI_CTscore(area_lesion_lobe['RML'], area_lobe['RML'])
+  PI_LUL, CT_LUL = PI_CTscore(area_lesion_lobe['LUL'], area_lobe['LUL'])
+  PI_LLL, CT_LLL = PI_CTscore(area_lesion_lobe['LLL'], area_lobe['LLL'])
 
   # make dataframe
   CT_score_df = {'Lobe':['Right Upper Lobe (RUL)','Right Lower Lobe (RLL)','Right Middle Lobe (RML)',
@@ -252,10 +253,17 @@ def TSS_score(score_lobe_, score_lesion_lobe_):
   elif TSS <= 17: Type ="Moderate"
   else: Type ="Severe"
 
-  return TSS, Type, pd.DataFrame.from_dict(CT_score_df), pd.DataFrame.from_dict(CT_score_df2,orient='index', columns=['Infection (%)', 'Score'])
+  # Total lung Involvement
+  lung_involve = area_lobe['RUL']+area_lobe['RLL']+area_lobe['RML']+area_lobe['LUL']+area_lobe['LLL']
+  lesion_involve = area_lesion_lobe['RUL']+area_lesion_lobe['RLL']+area_lesion_lobe['RML']+area_lesion_lobe['LUL']+area_lesion_lobe['LLL']
+  involvement = round((lesion_involve/lung_involve)*100, 2)
+  involve_percent = str(involvement) + '%'
+
+
+  return TSS, Type, involve_percent, pd.DataFrame.from_dict(CT_score_df), pd.DataFrame.from_dict(CT_score_df2,orient='index', columns=['Infection (%)', 'Score'])
 
 #-----------------------------------Overy---------------------------------------
-@jit
+
 def overay(result_oredict, image, slice__):
   colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1)]
   # resize 256 to 512
