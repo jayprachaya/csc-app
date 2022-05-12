@@ -264,23 +264,21 @@ def TSS_score(area_lobe, area_lesion_lobe):
 
 #-----------------------------------Overy---------------------------------------
 
-def overay(result_oredict, image, slice__):
+def overay(result_oredict, image, index: int):
   colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1)]
   # resize 256 to 512
-  result512 = cv2.resize(result_oredict[slice__,:,:], (512, 512), interpolation = cv2.INTER_NEAREST)
-  result_image = color.label2rgb(result512, image[slice__,:,:], alpha=0.2, bg_label=0, bg_color=(0, 0, 0), colors = colors)
+  result512 = cv2.resize(result_oredict[index,:,:], (512, 512), interpolation = cv2.INTER_NEAREST)
+  result_image = color.label2rgb(result512, image[index,:,:], alpha=0.2, bg_label=0, bg_color=(0, 0, 0), colors = colors)
   # result_image = color.label2rgb(result_oredict[slice__,:,:], image[slice__,:,:], alpha=0.2, bg_label=0, bg_color=(0, 0, 0), colors = colors)
 
   fig, axs = plt.subplots(1, 1, sharey=True)
-  #axs.set_title('Prediction')
+  # axs.set_title('Prediction')
   axs.imshow(result_image, cmap='Greys')
   axs.axis('off')
-  fig.tight_layout(pad = 0)
+  fig.tight_layout(pad=0)
   fig.patch.set_facecolor('#000000')
-  #fig.suptitle('Slice: '+str(zzz))
-  show_pyplot = plt.show()
 
-  return show_pyplot
+  return fig
 
 #-----------------------------------Save---------------------------------------
 def create_download_link(val, filename, type_file):
