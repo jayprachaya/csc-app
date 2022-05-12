@@ -55,8 +55,6 @@ that Normal, Mild, Moderate or Severe.''')
 
     st.session_state.patient_number = st.sidebar.text_input('Please Fill the Hospital Number', placeholder = 'Hospital Number')
     upload_file = st.sidebar.file_uploader('Choose CT scan File', type = ['jpg'], accept_multiple_files = True)
-    x = upload_file[0]
-    print(x)
     place_container = st.empty()
     predic, _, save_pdf = st.sidebar.columns([1, 2, 1])
     _, link_html = st.sidebar.columns([2, 2])
