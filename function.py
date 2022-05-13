@@ -166,7 +166,50 @@ def contrast_CLAHE(image, ts):
     return(new_img)
 
 # ---------------------------------- TSS ------------------------------------------
-
+@jit
+def sum_pixel(lung_result, lesion_result):
+  '''
+  Label class
+  RUL :right upper lobe:  1
+  RLL :right lower lobe:  2
+  RML :right middle lobe: 3
+  LUL :left upper lobe:   4
+  LLL :left lower lobe:   5
+  '''
+  area_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0,'ERROR':0}
+  area_lesion_lobe = {'BG':0 ,'RUL':0, 'RLL':0, 'RML':0, 'LUL':0, 'LLL':0}
+  for i in range(lung_result.shape[0]):
+    for j in range(lung_result.shape[1]):
+      for k in range(lung_result.shape[2]):
+        if lung_result[i,j,k] == 0: 
+          area_lobe["BG"] += 1 
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['BG']+=1
+          else: continue
+        elif lung_result[i,j,k] == 1: 
+          area_lobe["RUL"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['RUL']+=1
+          else: continue
+        elif lung_result[i,j,k] == 2: 
+          area_lobe["RLL"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['RLL']+=1
+          else: continue
+        elif lung_result[i,j,k] == 3: 
+          area_lobe["RML"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['RML']+=1
+          else: continue
+        elif lung_result[i,j,k] == 4: 
+          area_lobe["LUL"] += 1
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['LUL']+=1
+          else: continue
+        elif lung_result[i,j,k] == 5: 
+          area_lobe["LLL"] += 1 
+          if lesion_result[i,j,k] == 1 : area_lesion_lobe['LLL']+=1
+          else: continue
+        else: area_lobe["ERROR"] += 1
+  # print('***** DONE *****')
+  # print(score_lobe)
+  # print(score_lesion_lobe)
+  return area_lobe, area_lesion_lobe
 
 def PI_CTscore(Lesion_area, Lobe_area):
   quotient = Lesion_area / Lobe_area
