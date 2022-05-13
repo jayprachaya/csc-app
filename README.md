@@ -16,5 +16,14 @@ COVID-19 pandemic has spread all over the world, including Thailand. The disease
 <img src="https://github.com/hds-69/csc-app/blob/57db1150b52154eb33c64af3959c8c43b697c35b/Project%20info/save.gif" style="max-width: 20%;" align="center" />
 
 ## Development process
+1. Dataset: Train 24 cases, Test1 8 cases, Test2 62 cases
+2. Image Annotation by labelme for using label mask for Model Training
+3. Traning Model: 3D-Unet + Backbone (DenseNet, ResNet) using API: https://github.com/ZFTurbo/segmentation_models_3D
+4. Model Evaluation with Test1 dataset
+5. User Interface (UI) Development using Streamlit
+6. Develop the Percentage of Infection (PI%) and TSS calculator
+7. TSS Evaluation with Test2 dataset
 
 ## Reference
+1. https://github.com/qubvel/segmentation_models
+2. https://github.com/ZFTurbo/segmentation_models_3D
