@@ -7,7 +7,7 @@ COVID-19 pandemic has spread all over the world, including Thailand. The disease
 
 ## Step for work
 1. Input Lung CT-scan image `.jpg` (Max 256 images per patient)
-<img src="https://github.com/hds-69/csc-app/blob/648701070e48615e246a651b9c15423fea74765a/Project%20info/upload.gif" style="max-width: 20%;" align="center" />
+<img src="https://github.com/hds-69/csc-app/blob/f5f5645ab9675d7b73a79cc297e26cf8fa5ec60f/Project%20info/upload.gif" style="max-width: 20%;" align="center" />
 
 2. Click `Predict` button.
 <img src="https://github.com/hds-69/csc-app/blob/57db1150b52154eb33c64af3959c8c43b697c35b/Project%20info/predict.gif" style="max-width: 20%;" align="center" />
