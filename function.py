@@ -248,8 +248,7 @@ def TSS_score(area_lobe, area_lesion_lobe):
   # CT_each_PI = {'RUL':PI_RUL, 'RLL':PI_RLL, 'RML':PI_RML, 'LUL':PI_LUL, 'LLL':PI_LLL}
   # CT_each_Score = {'RUL':CT_RUL, 'RLL':CT_RLL, 'RML':CT_RML, 'LUL':CT_LUL, 'LLL':CT_LLL}
   TSS = CT_RUL+ CT_RLL+ CT_RML+ CT_LUL+ CT_LLL
-  if TSS == 0: Type ="Normal"
-  elif TSS <= 7: Type ="Mild"
+  if TSS <= 7: Type ="Mild"
   elif TSS <= 17: Type ="Moderate"
   else: Type ="Severe"
 
