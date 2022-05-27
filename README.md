@@ -1,6 +1,4 @@
 # Segmentation of Lung Lobes and Lesions for Severity Classification of COVID-19 CT Scans.
-App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py (please use in local computer) 
-
 Video: https://youtu.be/bAVM-OChI_k
 
 <img src="https://github.com/hds-69/csc-app/blob/2abecc4e249e88afafad68fa137d6251f2a77d0b/Project%20info/framework.gif" style="max-width: 20%;" align="center" />
@@ -9,8 +7,46 @@ Video: https://youtu.be/bAVM-OChI_k
 Lung computed tomography (CT) severity score can be used for predicting clinical outcomes of patient with COVID-19. In this study, we propose a deep learning sematic segmentation for lung severity scoring of COVID-19 infection using the combination of 3D-UNet and pre-trained models, DenseNet and ResNet.
 The segmentation model was trained with axial CT scans of 32 COVID-19 patients (training: 24, validation: 8) and tested with CT dataset of 8 patients. Next, the segmented masks were used to calculate the percentage of infection (PI), Total Severity Score (TSS) and define severity type. Lastly, correlation between model-predicted vs radiologist TSS was analyzed using CT scans of 62 patient.
 
+App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py (please use in local computer) 
+
+## Requirements
+1. You need install `Python >= 3.9.6`
+2. Library requirement
+
+        streamlit
+        numpy
+        pandas
+        patchify==0.2.3
+        segmentation-models-3D==1.0.3
+        keras==2.8.0
+        Keras-Applications==1.0.8
+        tensorflow==2.8.0
+        regex
+        scikit-image==0.18.3
+        pandas==1.3.5
+        matplotlib
+        numba
+        zipp
+        opencv-python==4.5.5.64
+        Pillow==8.3.2
+        fpdf
+
+## Installation
+1. clone this project followed by Github CLI command: 
+
+       gh repo clone hds-no-69/COVID-19_Severity_Calculator
+   or download project `zip` file 
+2. Open a command prompt or terminal for `CD` command to change the directory to project location.
+3. Installation with pip allows the usage of the install command:
+
+        pip install -r requirements.txt
+        
+4. Run the App
+
+        streamlit run app.py
+
 ## Use steps
-1. Input Lung CT-scan image `.jpg` (Max 256 images per patient)
+1. Input Lung CT-scan image `.jpg` (Min/Max range  80-256 images per patient)
 <img src="https://github.com/hds-69/csc-app/blob/f5f5645ab9675d7b73a79cc297e26cf8fa5ec60f/Project%20info/upload.gif" style="max-width: 20%;" align="center" />
 
 2. Click `Predict` button.
