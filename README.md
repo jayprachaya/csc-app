@@ -56,8 +56,13 @@ App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py (please use in l
 <img src="https://github.com/hds-69/csc-app/blob/57db1150b52154eb33c64af3959c8c43b697c35b/Project%20info/save.gif" style="max-width: 20%;" align="center" />
 
 ## Development process
-1. Dataset: Train 24 cases, Test1 8 cases, Test2 62 cases.
-2. Image Annotation by labelme for using label mask for Model Training.
+1. Dataset: Train 32 cases (3,752 images), Test1 8 cases (1,314 images), Test2 62 cases (7,686 images)
+
+   CT-scans image range: `92-208` images
+   
+   Case Type: `No lesion, Mild, Moderate, Severe`
+   
+2. Image Annotation by labelme for using label mask for Model Training. (for Train set and Test1 set)
 3. Traning Model: 3D-Unet + Backbone (DenseNet, ResNet) using API: https://github.com/ZFTurbo/segmentation_models_3D
 4. Model Evaluation with Test1 dataset.
 5. User Interface (UI) Development using Streamlit.
