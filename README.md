@@ -1,5 +1,6 @@
 # Segmentation of Lung Lobes and Lesions for Severity Classification of COVID-19 CT Scans.
 App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py
+please use in local computer
 
 
 ## About
@@ -28,21 +29,20 @@ The segmentation model was trained with axial CT scans of 32 COVID-19 patients (
 ## Results
 The model was evaluated on a dataset of 8 infected patients, and the results demonstrated that 3D-UNet + DenseNet169 achieved the best performance, yielding Dice Similarity Coefficient (DSC) of 92.89% and 84.22% for lung lobe and lesion segmentation, respectively. The proposed model can reliably segment lesions on CT scans of severe cases, but the model performed less accurately in segmenting lung lesions of mild and moderate cases. However, the TSS calculated by the proposed model were comparable to those assigned by radiologists. Using CT scans of 62 COVID-19 patients for evaluation, the correlation coefficient (r) was 0.9125, indicating a very strong correlation.
 
-Model Testing Result (with Test set 1)
+Model Testing Result Table(with Test set 1)
 
 | Objective             | Model   | Backbone.   |  DSC | IoU  |
 | --------------------- | ------- | ----------- |------|------|
 | Lung lobe segmentation| 3D-Unet |DenseNet 169 |92.89%|90.44%|
 | Lesion segmentation   | 3D-Unet |DenseNet 169 |84.22%|79.61%|
 
-DSC: Dice Similarity Coefficient
 
-TSS calculation Testing Result (with Test set 2)
+TSS calculation Testing Result Table(with Test set 2)
 | Regression Statistics  | Value   |
 | ---------------------- | ------- |
 | Correlation Coefficient| 0.9125  |
 | R Square               | 0.8327  |
-| Adjusted R Square      |   0.8299|
+| Adjusted R Square      | 0.8299  |
 | Standard Error         | 2.5629  | 
 | Observations           |   62    |
 | p-value                | <0.01   |
