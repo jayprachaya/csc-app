@@ -52,10 +52,10 @@ TSS calculation Testing Result Table(with Test set 2)
 
 
 ## Reference
-1. Roman Solovyev, Alexandr A Kalinin, and Tatiana Gabruseva, 2022, ``3D convolutional neural networks for stalled brain capillary detection,'' Comput. Biol. Med., vol. 141, no. 105089, pp. 105089, 2022.
-2. Feng Pan, Tianhe Ye, Peng Sun, Shan Gui, Bo Liang, Lingli Li, Dandan Zheng, Jiazheng Wang, Richard L. Hesketh, LianYang,andChuanshengZheng, 2020,``TimeCourseofLungChangesatChestCTduringRecoveryfrom Coronavirus Disease 2019 (COVID-19),'' Radiology, vol. 295, no. 3, pp. 715--721, June 2020.
-3. Marco Francone, Franco Iafrate, Giorgio Maria Masci, Simona Coco, Francesco Cilia, Lucia Manganaro, Valeria Panebianco, Chiara Andreoli, Maria Chiara Colaiacomo, Maria Antonella Zingaropoli, Maria Rosa Ciardi, Claudio Maria Mastroianni, Francesco Pugliese, Francesco Alessandri, Ombretta Turriziani, Paolo Ricci, and Carlo Catalano, 2020, ``Chest CT score in COVID-19 patients: correlation with disease severity and short-term prognosis,'' European Radiology, vol. 30, no. 12, pp. 6808--6817, July 2020.
-4. Xiaojun Guan, Liding Yao, Yanbin Tan, Zhujing Shen, Hanpeng Zheng, Haisheng Zhou, Yuantong Gao, Yongchou Li, Wenbin Ji, Huangqi Zhang, Jun Wang, Minming Zhang, and Xiaojun Xu, 2021, ``Quantitative and semi-quantitative CT assessments of lung lesion burden in COVID-19 pneumonia,'' Scientific Reports, vol. 11, no. 1, Mar. 2021.
+1. Roman Solovyev, Alexandr A Kalinin, and Tatiana Gabruseva, 2022, ``3D convolutional neural networks for stalled brain capillary detection,'' Comput. Biol. Med., vol. 141, no. 105089, pp. 105089, 2022. https://doi.org/10.1016/j.compbiomed.2021.105089
+2. Pan F, Ye T, Sun P, et al. Time course of lung changes at chest CT during recovery from coronavirus disease 2019 (COVID-19). Radiology. 2020;295(3):715-721. doi:10.1148/radiol.2020200370
+3. Francone M, Iafrate F, Masci GM, Coco S, Cilia F, Manganaro L, et al. Chest CT score in COVID-19 patients: correlation with disease severity and short-term prognosis. Eur Radiol. 2020;30(12):6808-6817. https://doi.org/10.1007/s00330-020-07033-y
+4.  Guan X, Yao L, Tan Y et al. Quantitative and semi-quantitative CT assessments of lung lesion burden in COVID-19 pneumonia. Sci Rep. 2021;11(1). doi:10.1038/s41598-021-84561-7
 5. Xiao Z, Liu B, Geng L, Zhang F, Liu Y. Segmentation of lung nodules using improved 3D-UNet neural network. Symmetry (Basel). 2020;12(11):1787. doi:10.3390/sym12111787
 6. Qiblawey Y, Tahir A, Chowdhury M, et al. Detection and severity classification of COVID-19 in CT images using deep learning. Diagnostics. 2021;11(5):893. doi:10.3390/diagnostics11050893
 7. Chen, M., Gu, Y., Qin, Y., Zheng, H., & Yang, J. (2020). LOBENET: A GLOBAL POSITION RESERVATION AND FISSURE-AWARE CONVOLUTIONAL NEURAL NETWORK FOR PULMONARY LOBE SEGMENTATION.
