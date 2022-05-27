@@ -1,7 +1,7 @@
 # Segmentation of Lung Lobes and Lesions for Severity Classification of COVID-19 CT Scans.
 App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py
 please use in local computer
-
+<img src="https://github.com/hds-69/csc-app/blob/2abecc4e249e88afafad68fa137d6251f2a77d0b/Project%20info/framework.gif" style="max-width: 20%;" align="center" />
 
 ## About
 Lung computed tomography (CT) severity score can be used for predicting clinical outcomes of patient with COVID-19. In this study, we propose a deep learning sematic segmentation for lung severity scoring of COVID-19 infection using the combination of 3D-UNet and pre-trained models, DenseNet and ResNet.
