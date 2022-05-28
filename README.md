@@ -10,7 +10,7 @@ The segmentation model was trained with axial CT scans of 32 COVID-19 patients (
 App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py (please use in local computer) 
 
 ## Requirements
-1. You need install `Python >= 3.9.6`
+1. You need install `Python >= 3.9.13`
 2. Library requirement
 
         streamlit
