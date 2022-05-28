@@ -34,7 +34,7 @@ App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py (please use in l
 ## Installation
 1. clone this project followed by Github CLI command: 
 
-       gh repo clone hds-no-69/COVID-19_Severity_Calculator
+       gh repo clone hds-69/csc-app
    or download project `zip` file 
 2. Open a command prompt or terminal for `CD` command to change the directory to project location.
 3. Installation with pip allows the usage of the install command:
