@@ -46,6 +46,8 @@ App Demo: https://share.streamlit.io/hds-69/csc-app/main/app.py (please use in l
         streamlit run app.py
 
 ## Use steps
+Installation handbook > https://docs.google.com/presentation/d/1DoHhD1M588GQGURy2NagAL8hC8nkRoxNFfkGxB3L2vs/edit?usp=sharing
+
 1. Input Lung CT-scan image `.jpg` (Min/Max range  80-256 images per patient)
 <img src="https://github.com/hds-69/csc-app/blob/f5f5645ab9675d7b73a79cc297e26cf8fa5ec60f/Project%20info/upload.gif" style="max-width: 20%;" align="center" />
 
