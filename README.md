@@ -76,7 +76,7 @@ The model was evaluated on a dataset of 8 infected patients, and the results dem
 
 Model Testing Result Table `Test with Test set 1`
 
-| Objective             | Model   | Backbone.   | IoU  |  DSC | Accuracy | Precision | Sensitivity | Specificity |
+| Objective             | Model   | Backbone   | IoU  |  DSC | Accuracy | Precision | Sensitivity | Specificity |
 | --------------------- | ------- | ----------- |------|------|----------|-----------|-------------|-------------|
 | Lung lobe segmentation| 3D-Unet |DenseNet 169 |90.44%|92.89%| 98.49%   | 94.18%    | 95.52%      | 98.49%      |
 | Lesion segmentation   | 3D-Unet |DenseNet 169 |79.61%|84.22%| 98.86%   | 86.7%     | 89.07%      | 98.91%      |
@@ -90,7 +90,7 @@ TSS calculation Testing Result Table `Test with Test set 2`
 | Adjusted R Square      | 0.8299  |
 | Standard Error         | 2.5629  | 
 | Observations           |   62    |
-| p-value                | <0.01   |
+| p-value                | <0.001   |
 
 
 
