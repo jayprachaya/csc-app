@@ -93,6 +93,14 @@ TSS calculation Testing Result Table `Test with Test set 2`
 | p-value                | <0.001   |
 
 
+## Citation
+
+For more details,
+
+If you find this code useful, please cite our project
+```
+
+```
 
 ## Reference
 1. Roman Solovyev, Alexandr A Kalinin, and Tatiana Gabruseva, 2022, ``3D convolutional neural networks for stalled brain capillary detection,'' Comput. Biol. Med., vol. 141, no. 105089, pp. 105089, 2022. https://doi.org/10.1016/j.compbiomed.2021.105089
