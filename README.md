@@ -1,11 +1,10 @@
-# Segmentation of lung lobes and lesions in CT scans for severity classification of covid-19
+# Segmentation of Lung Lobes and Lesions in Chest   CT for the Classification of COVID-19 Severity
 Video: https://youtu.be/bAVM-OChI_k
 
 <img src="https://github.com/hds-69/csc-app/blob/2abecc4e249e88afafad68fa137d6251f2a77d0b/Project%20info/framework.gif" style="max-width: 20%;" align="center" />
 
 ## About
-Lung computed tomography (CT) severity score can be used for predicting clinical outcomes of patient with COVID-19. In this study, we propose a deep learning sematic segmentation for lung severity scoring of COVID-19 infection using the combination of 3D-UNet and pre-trained models, DenseNet and ResNet.
-The segmentation model was trained with axial CT scans of 32 COVID-19 patients (training: 24, validation: 8) and tested with CT dataset of 8 patients. Next, the segmented masks were used to calculate the percentage of infection (PI), Total Severity Score (TSS) and define severity type. Lastly, correlation between model-predicted vs radiologist TSS was analyzed using CT scans of 62 patient.
+To precisely determine the severity of COVID-19-related pneumonia, computed tomography (CT) is an imaging modality beneficial for patient monitoring and therapy planning. Thus, we aimed to develop a deep learning-based image segmentation model to automatically assess lung lesions related to COVID-19 infection and calculate the total severity score (TSS). The entire dataset consists of 100 COVID-19 patients acquired from Chulabhorn Hospital, divided into 25 cases without lung lesions and 75 cases with lung lesions categorized severity by radiologists regarding TSS. The model combines a 3D-UNet with pre-trained DenseNet and ResNet models for lung lobe segmentation and calculation of the percentage of lung involvement related to COVID-19 infection as well as TSS measured by the Dice similarity coefficient (DSC). Our final model, consisting of 3D-UNet integrated with DenseNet169, achieved segmentation of lung lobes and lesions with Dice similarity coefficients of 0.929 and 0.842, respectively. The calculated TSSs are similar to those evaluated by radiologists, with an R2 of 0.833. The correlation between the ground-truth TSS and model prediction was greater than that of the radiologist, which was 0.993 and 0.836, respectively.
 
 App demo: please use in local computer.
 
@@ -95,7 +94,7 @@ TSS calculation Testing Result Table `Test with Test set 2`
 
 ## Citation
 
-For more details, If you find this code useful, please cite our project
+For more information, kindly acknowledge our project by citing it when using the code. The article is currently under review.
 ```
-
+https://doi.org/10.21203/rs.3.rs-2466037/v1
 ```
